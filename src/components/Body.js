@@ -1,31 +1,9 @@
 import RestaurantCard from "./RestaurantCard";
-// import resList from "../utils/mockData";
+import resList from "../utils/mockData";
+import { useState } from "react";
 
 const Body = () => {
-  const listOfRestaurants = [
-    {
-      data: {
-        id: "334475",
-        name: "KFC",
-        cloudinaryImageId: "bdcd233971b7c81bf77e1fa4471280eb",
-        cuisines: ["Burgers", "Biryani", "American", "Snacks", "Fast Food"],
-        costForTwo: 40000,
-        deliveryTime: 36,
-        avgRating: "3.8",
-      },
-    },
-    {
-      data: {
-        id: "334476",
-        name: "DOMINOS",
-        cloudinaryImageId: "bdcd233971b7c81bf77e1fa4471280eb",
-        cuisines: ["Burgers", "Biryani", "American", "Snacks", "Fast Food"],
-        costForTwo: 40000,
-        deliveryTime: 36,
-        avgRating: "4.5",
-      },
-    },
-  ];
+  const [listOfRestaurants, setListOfRestraunt] = useState(resList);
 
   return (
     <div className="body">
@@ -33,10 +11,12 @@ const Body = () => {
         <button
           onClick={() => {
             console.log("clicked");
-            // Filter logic here 
+            // Filter logic here
             const filteredList = listOfRestaurants.filter(
-              (res) => res.data.avgRating > 4);
-              console.log(filteredList);
+              (res) => res.data.avgRating > 4
+            );
+            console.log(filteredList);
+            setListOfRestraunt(filteredList);
           }}
           className="filter-btn"
         >

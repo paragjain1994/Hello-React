@@ -21,11 +21,15 @@ const Body = () => {
     setListOfRestraunt(json?.data?.cards[2]?.data?.data?.cards);
   };
 
-  if (listOfRestaurants.length === 0) {
-    return <Shimmer/>;
-  }
+  // if (listOfRestaurants.length === 0) {
+  //   return <Shimmer/>;
+  // }
 
-  return (
+  // conditional rendering using ternary operator
+
+  return listOfRestaurants.length === 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
       <div className="filter">
         <button

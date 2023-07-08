@@ -2,8 +2,13 @@ import RestaurantCard from "./RestaurantCard";
 // import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
+
 const Body = () => {
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
+  const [searchText, setSearchText] = useState("");
+
+  console.log("Body rendered");
 
   useEffect(() => {
     console.log("useEffect called");
@@ -19,19 +24,38 @@ const Body = () => {
     console.log(json);
     // Optional Chaining
     setListOfRestraunt(json?.data?.cards[2]?.data?.data?.cards);
+    setFilteredRestaurant(json?.data?.cards[2]?.data?.data?.cards);
   };
-
-  // if (listOfRestaurants.length === 0) {
-  //   return <Shimmer/>;
-  // }
-
-  // conditional rendering using ternary operator
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
   ) : (
     <div className="body">
       <div className="filter">
+        <div className="search">
+          <input
+            type="text"
+            className="search-box"
+            value={searchText}
+            onChange={(event) => {
+              setSearchText(event.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              // Filter the restaurant cards and update the UI
+              console.log(searchText);
+
+             const filteredRestaurant =  listOfRestaurants.filter((res) =>
+                res.data.name.toLowerCase().includes(searchText.toLowerCase())
+              );
+
+              setFilteredRestaurant(filteredRestaurant);
+            }}
+          >
+            Search
+          </button>
+        </div>
         <button
           onClick={() => {
             console.log("clicked");
@@ -40,7 +64,7 @@ const Body = () => {
               (res) => res.data.avgRating > 4
             );
             console.log(filteredList);
-            setListOfRestraunt(filteredList);
+            setFilteredRestaurant(filteredList);
           }}
           className="filter-btn"
         >
@@ -48,7 +72,7 @@ const Body = () => {
         </button>
       </div>
       <div className="res-container">
-        {listOfRestaurants.map((restaurant) => (
+        {filteredRestaurant.map((restaurant) => (
           <RestaurantCard key={restaurant.data.id} resData={restaurant} />
         ))}
       </div>

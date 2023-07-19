@@ -1,8 +1,8 @@
 import RestaurantCard from "./RestaurantCard";
-// import resList from "../utils/mockData";
 import { useState, useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
@@ -10,6 +10,8 @@ const Body = () => {
   const [searchText, setSearchText] = useState("");
 
   console.log("Body rendered");
+
+ 
 
   useEffect(() => {
     console.log("useEffect called");
@@ -27,6 +29,16 @@ const Body = () => {
     setListOfRestraunt(json?.data?.cards[2]?.data?.data?.cards);
     setFilteredRestaurant(json?.data?.cards[2]?.data?.data?.cards);
   };
+
+
+  const onlineStatus = useOnlineStatus();
+
+  if (onlineStatus === false)
+  return (
+    <h1>
+      Looks like you're offline!! Please check your internet connection;
+    </h1>
+  );
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />

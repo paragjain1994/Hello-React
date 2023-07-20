@@ -11,8 +11,6 @@ const Body = () => {
 
   console.log("Body rendered");
 
- 
-
   useEffect(() => {
     console.log("useEffect called");
     fetchData();
@@ -30,46 +28,43 @@ const Body = () => {
     setFilteredRestaurant(json?.data?.cards[2]?.data?.data?.cards);
   };
 
-
   const onlineStatus = useOnlineStatus();
 
   if (onlineStatus === false)
+    return (
+      <h1>
+        Looks like you're offline!! Please check your internet connection;
+      </h1>
+    );
+
   return (
-    <h1>
-      Looks like you're offline!! Please check your internet connection;
-    </h1>
-  );
-
-  return listOfRestaurants.length === 0 ? (
-    <Shimmer />
-  ) : (
     <div className="body">
-      <div className="filter">
-        <div className="search">
-          <input
-            type="text"
-            className="search-box"
-            value={searchText}
-            onChange={(event) => {
-              setSearchText(event.target.value);
-            }}
-          />
-          <button
-            onClick={() => {
-              // Filter the restaurant cards and update the UI
-              console.log(searchText);
-
-             const filteredRestaurant =  listOfRestaurants.filter((res) =>
-                res.data.name.toLowerCase().includes(searchText.toLowerCase())
-              );
-
-              setFilteredRestaurant(filteredRestaurant);
-            }}
-          >
-            Search
-          </button>
-        </div>
+      <div className="m-4 p-4">
+        <input
+          type="text"
+          className="border border-block border-solid"
+          value={searchText}
+          onChange={(event) => {
+            setSearchText(event.target.value);
+          }}
+        />
         <button
+          className="px-4 py-2 bg-green-100 rounded-lg"
+          onClick={() => {
+            // Filter the restaurant cards and update the UI
+            console.log(searchText);
+
+            const filteredRestaurant = listOfRestaurants.filter((res) =>
+              res.data.name.toLowerCase().includes(searchText.toLowerCase())
+            );
+
+            setFilteredRestaurant(filteredRestaurant);
+          }}
+        >
+          Search
+        </button>
+        <button
+          className="px-4 py-2 bg-gray-100 rounded-lg"
           onClick={() => {
             console.log("clicked");
             // Filter logic here
@@ -79,14 +74,16 @@ const Body = () => {
             console.log(filteredList);
             setFilteredRestaurant(filteredList);
           }}
-          className="filter-btn"
         >
           Top Rated Restaurants
         </button>
       </div>
-      <div className="res-container">
+
+      <div className="flex flex-wrap">
         {filteredRestaurant.map((restaurant) => (
-        <Link to={"restaurants/" + restaurant.data.id}><RestaurantCard resData={restaurant} /></Link>  
+          <Link to={"restaurants/" + restaurant.data.id}>
+            <RestaurantCard resData={restaurant} />
+          </Link>
         ))}
       </div>
     </div>

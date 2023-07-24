@@ -1,20 +1,21 @@
 import RestaurantCard,{withPromtedLabel} from "./RestaurantCard";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/Usercontext";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestraunt] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchText, setSearchText] = useState("");
 
-  console.log("Body rendered", listOfRestaurants);
+  // console.log("Body rendered", listOfRestaurants);
 
   const RestaurantCardPromoted = withPromtedLabel(RestaurantCard);
 
   useEffect(() => {
-    console.log("useEffect called");
+    // console.log("useEffect called");
     fetchData();
   }, []);
 
@@ -24,7 +25,7 @@ const Body = () => {
     );
 
     const json = await data.json();
-    console.log(json);
+    // console.log(json);
     // Optional Chaining
     setListOfRestraunt(json?.data?.cards[2]?.data?.data?.cards);
     setFilteredRestaurant(json?.data?.cards[2]?.data?.data?.cards);
@@ -38,6 +39,8 @@ const Body = () => {
         Looks like you're offline!! Please check your internet connection;
       </h1>
     );
+
+    const {loggedInUser,setUserName} = useContext(UserContext);
 
   return  (
     <div className="body">
@@ -73,12 +76,22 @@ const Body = () => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.data.avgRating > 4
             );
-            console.log(filteredList);
+            // console.log(filteredList);
             setFilteredRestaurant(filteredList);
           }}
         >
           Top Rated Restaurants
         </button>
+       
+          <label htmlFor="">Username</label>
+        <input
+          type="text"
+          className="border border-block border-solid p-2 m-2"
+          value={loggedInUser}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+       
+      
       </div>
 
       <div className="flex flex-wrap">
